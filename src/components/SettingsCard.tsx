@@ -43,18 +43,24 @@ export default function SettingsCard({ settings, onChange, onWipe, accent }: Set
   return (
     <section className="panel anim-fade-up px-6 py-6" style={{ animationDelay: "0.2s" }}>
       <div className="flex items-baseline justify-between">
-        <h2 className="font-display text-sm font-semibold uppercase tracking-[0.2em] text-white/80">
+        <h2 className="font-display text-sm font-semibold uppercase tracking-[0.2em]" style={{ color: "var(--text-muted)" }}>
           Настройки
         </h2>
-        <span className="text-xs font-medium text-white/35">сохраняются автоматически</span>
+        <span className="text-xs font-medium" style={{ color: "var(--text-faint)" }}>
+          сохраняются автоматически
+        </span>
       </div>
 
-      <ul className="mt-4 divide-y divide-white/5">
+      <ul className="mt-4 divide-y" style={{ borderColor: "var(--border-panel)" }}>
         {ROWS.map((row) => (
-          <li key={row.key} className="flex items-center gap-3 py-3.5">
+          <li key={row.key} className="flex items-center gap-3 py-3.5" style={{ borderColor: "var(--border-panel)" }}>
             <div className="min-w-0 flex-1">
-              <p className="text-sm font-semibold text-[#EDE8DD]">{row.label}</p>
-              <p className="text-xs font-medium text-white/35">{row.hint}</p>
+              <p className="text-sm font-semibold" style={{ color: "var(--text-secondary)" }}>
+                {row.label}
+              </p>
+              <p className="text-xs font-medium" style={{ color: "var(--text-faint)" }}>
+                {row.hint}
+              </p>
             </div>
             <div className="flex items-center gap-1.5">
               <button
@@ -62,15 +68,27 @@ export default function SettingsCard({ settings, onChange, onWipe, accent }: Set
                 aria-label={`Уменьшить: ${row.label}`}
                 onClick={() => step(row.key, -1)}
                 disabled={settings[row.key] <= row.min}
-                className="grid h-9 w-9 place-items-center rounded-lg border border-white/10 bg-white/5 text-lg font-bold text-white/65 transition-all hover:border-white/25 hover:text-white active:scale-90 disabled:pointer-events-none disabled:opacity-30"
+                className="grid h-9 w-9 place-items-center rounded-lg text-lg font-bold transition-all active:scale-90 disabled:pointer-events-none disabled:opacity-30"
+                style={{
+                  border: "1px solid var(--border-button)",
+                  background: "var(--bg-button)",
+                  color: "var(--text-muted)",
+                }}
               >
                 −
               </button>
-              <div className="flex w-[74px] items-baseline justify-center gap-1 rounded-lg border border-white/10 bg-black/25 py-1.5">
+              <div
+                className="flex w-[74px] items-baseline justify-center gap-1 rounded-lg py-1.5"
+                style={{
+                  border: "1px solid var(--border-input)",
+                  background: "var(--bg-input)",
+                }}
+              >
                 <input
                   type="number"
                   inputMode="numeric"
-                  className="no-spin w-9 bg-transparent text-right font-display text-base font-semibold text-[#F2EDE3] outline-none"
+                  className="no-spin w-9 bg-transparent text-right font-display text-base font-semibold outline-none"
+                  style={{ color: "var(--text-primary)" }}
                   value={settings[row.key]}
                   min={row.min}
                   max={row.max}
@@ -78,14 +96,21 @@ export default function SettingsCard({ settings, onChange, onWipe, accent }: Set
                   onBlur={(e) => setDirect(row.key, e.target.value)}
                   aria-label={row.label}
                 />
-                <span className="text-[11px] font-semibold text-white/35">{row.unit}</span>
+                <span className="text-[11px] font-semibold" style={{ color: "var(--text-faint)" }}>
+                  {row.unit}
+                </span>
               </div>
               <button
                 type="button"
                 aria-label={`Увеличить: ${row.label}`}
                 onClick={() => step(row.key, 1)}
                 disabled={settings[row.key] >= row.max}
-                className="grid h-9 w-9 place-items-center rounded-lg border border-white/10 bg-white/5 text-lg font-bold text-white/65 transition-all hover:border-white/25 hover:text-white active:scale-90 disabled:pointer-events-none disabled:opacity-30"
+                className="grid h-9 w-9 place-items-center rounded-lg text-lg font-bold transition-all active:scale-90 disabled:pointer-events-none disabled:opacity-30"
+                style={{
+                  border: "1px solid var(--border-button)",
+                  background: "var(--bg-button)",
+                  color: "var(--text-muted)",
+                }}
               >
                 +
               </button>
@@ -121,7 +146,7 @@ export default function SettingsCard({ settings, onChange, onWipe, accent }: Set
       </div>
 
       {/* сброс статистики */}
-      <div className="mt-5 border-t border-white/5 pt-4">
+      <div className="mt-5 pt-4" style={{ borderTop: "1px solid var(--border-panel)" }}>
         <button
           type="button"
           onClick={() => {
@@ -132,11 +157,18 @@ export default function SettingsCard({ settings, onChange, onWipe, accent }: Set
               setArmed(true);
             }
           }}
-          className={`flex w-full items-center justify-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-semibold transition-all duration-200 active:scale-[0.98] ${
-            armed
-              ? "border-red-400/50 bg-red-500/15 text-red-300"
-              : "border-white/10 bg-white/5 text-white/45 hover:border-white/20 hover:text-white/75"
+          className={`flex w-full items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-200 active:scale-[0.98] ${
+            armed ? "border-red-400/50 bg-red-500/15 text-red-300" : ""
           }`}
+          style={
+            armed
+              ? undefined
+              : {
+                  border: "1px solid var(--border-button)",
+                  background: "var(--bg-button)",
+                  color: "var(--text-muted)",
+                }
+          }
         >
           <IconTrash className="h-4 w-4" />
           {armed ? "Нажмите ещё раз для удаления" : "Очистить всю статистику"}
@@ -164,11 +196,13 @@ function ToggleRow({
   return (
     <div className="flex items-center gap-3 py-2.5">
       <div className="min-w-0 flex-1">
-        <p className="flex items-center gap-2 text-sm font-semibold text-[#EDE8DD]">
-          {icon && <span className="text-white/40">{icon}</span>}
+        <p className="flex items-center gap-2 text-sm font-semibold" style={{ color: "var(--text-secondary)" }}>
+          {icon && <span style={{ color: "var(--text-muted)" }}>{icon}</span>}
           {label}
         </p>
-        <p className="text-xs font-medium text-white/35">{hint}</p>
+        <p className="text-xs font-medium" style={{ color: "var(--text-faint)" }}>
+          {hint}
+        </p>
       </div>
       <button
         type="button"
@@ -178,15 +212,18 @@ function ToggleRow({
         onClick={onToggle}
         className="relative h-[26px] w-[46px] shrink-0 rounded-full transition-colors duration-300"
         style={{
-          background: value ? accent : "rgba(235,242,235,0.12)",
+          background: value ? accent : "var(--toggle-bg)",
           boxShadow: value
             ? `0 0 14px color-mix(in srgb, ${accent} 45%, transparent)`
-            : "inset 0 0 0 1px rgba(255,255,255,0.08)",
+            : `inset 0 0 0 1px var(--toggle-border)`,
         }}
       >
         <span
-          className="absolute top-[3px] h-5 w-5 rounded-full bg-[#F4F1E8] shadow-md transition-all duration-300 ease-[cubic-bezier(.22,1,.36,1)]"
-          style={{ left: value ? 23 : 3 }}
+          className="absolute top-[3px] h-5 w-5 rounded-full shadow-md transition-all duration-300 ease-[cubic-bezier(.22,1,.36,1)]"
+          style={{
+            left: value ? 23 : 3,
+            background: "var(--toggle-knob)",
+          }}
         />
       </button>
     </div>

@@ -69,7 +69,13 @@ export default function TimerCard({
       </div>
 
       {/* переключатель режимов */}
-      <div className="relative z-10 mx-auto grid w-full max-w-md grid-cols-3 rounded-full border border-white/8 bg-black/25 p-1">
+      <div
+        className="relative z-10 mx-auto grid w-full max-w-md grid-cols-3 rounded-full p-1"
+        style={{
+          border: "1px solid var(--border-panel)",
+          background: "var(--bg-input)",
+        }}
+      >
         <span
           aria-hidden
           className="absolute inset-y-1 left-1 w-[calc((100%-0.5rem)/3)] rounded-full transition-transform duration-300 ease-[cubic-bezier(.22,1,.36,1)]"
@@ -85,9 +91,13 @@ export default function TimerCard({
             type="button"
             onClick={() => onSwitchMode(m)}
             className={`relative z-10 rounded-full px-2 py-2.5 text-[13px] font-semibold transition-colors duration-300 sm:text-sm ${
-              m === mode ? "" : "text-white/45 hover:text-white/80"
+              m === mode ? "" : "hover:opacity-80"
             }`}
-            style={m === mode ? { color: MODE_META[m].color } : undefined}
+            style={
+              m === mode
+                ? { color: MODE_META[m].color }
+                : { color: "var(--text-muted)" }
+            }
           >
             {MODE_META[m].short}
           </button>
@@ -104,7 +114,7 @@ export default function TimerCard({
               cy="170"
               r="164"
               fill="none"
-              stroke="rgba(230,240,232,0.14)"
+              stroke="var(--ring-decor)"
               strokeWidth="1.5"
               strokeDasharray="1.5 10.5"
               strokeLinecap="round"
@@ -115,7 +125,7 @@ export default function TimerCard({
             cy="170"
             r={R}
             fill="none"
-            stroke="rgba(230,240,232,0.08)"
+            stroke="var(--ring-track)"
             strokeWidth="13"
           />
           <circle
@@ -142,7 +152,10 @@ export default function TimerCard({
           >
             {meta.label}
           </span>
-          <div className="font-display mt-2 whitespace-nowrap text-[clamp(52px,16vw,72px)] font-bold leading-none tracking-tight text-[#F2EDE3]">
+          <div
+            className="font-display mt-2 whitespace-nowrap text-[clamp(52px,16vw,72px)] font-bold leading-none tracking-tight"
+            style={{ color: "var(--text-primary)" }}
+          >
             {mm}
             <span className={running ? "colon-blink" : ""}>:</span>
             {ss}
@@ -159,15 +172,16 @@ export default function TimerCard({
                         boxShadow: `0 0 8px color-mix(in srgb, ${meta.color} 70%, transparent)`,
                         transform: "scale(1)",
                       }
-                    : { background: "rgba(235,242,235,0.16)", transform: "scale(0.85)" }
+                    : { background: "var(--dot-inactive)", transform: "scale(0.85)" }
                 }
               />
             ))}
           </div>
           <p
             className={`mt-4 text-sm font-medium transition-colors duration-500 ${
-              status === "paused" ? "text-amber-300/90" : "text-white/45"
+              status === "paused" ? "text-amber-400" : ""
             }`}
+            style={status !== "paused" ? { color: "var(--text-muted)" } : undefined}
           >
             {caption}
           </p>
@@ -181,7 +195,22 @@ export default function TimerCard({
           onClick={onReset}
           title="Сброс (R)"
           aria-label="Сбросить таймер"
-          className="group grid h-13 w-13 place-items-center rounded-full border border-white/10 bg-white/5 text-white/60 transition-all duration-200 hover:border-white/25 hover:bg-white/10 hover:text-white active:scale-90"
+          className="group grid h-13 w-13 place-items-center rounded-full transition-all duration-200 active:scale-90"
+          style={{
+            border: "1px solid var(--border-button)",
+            background: "var(--bg-button)",
+            color: "var(--text-muted)",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.borderColor = "var(--border-button-hover)";
+            e.currentTarget.style.background = "var(--bg-button-hover)";
+            e.currentTarget.style.color = "var(--text-primary)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderColor = "var(--border-button)";
+            e.currentTarget.style.background = "var(--bg-button)";
+            e.currentTarget.style.color = "var(--text-muted)";
+          }}
         >
           <IconReset className="h-5 w-5 transition-transform duration-500 group-hover:-rotate-[200deg]" />
         </button>
@@ -208,13 +237,28 @@ export default function TimerCard({
           onClick={onSkip}
           title="Пропустить сессию (S)"
           aria-label="Пропустить сессию"
-          className="group grid h-13 w-13 place-items-center rounded-full border border-white/10 bg-white/5 text-white/60 transition-all duration-200 hover:border-white/25 hover:bg-white/10 hover:text-white active:scale-90"
+          className="group grid h-13 w-13 place-items-center rounded-full transition-all duration-200 active:scale-90"
+          style={{
+            border: "1px solid var(--border-button)",
+            background: "var(--bg-button)",
+            color: "var(--text-muted)",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.borderColor = "var(--border-button-hover)";
+            e.currentTarget.style.background = "var(--bg-button-hover)";
+            e.currentTarget.style.color = "var(--text-primary)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderColor = "var(--border-button)";
+            e.currentTarget.style.background = "var(--bg-button)";
+            e.currentTarget.style.color = "var(--text-muted)";
+          }}
         >
           <IconSkip className="h-5 w-5 transition-transform duration-200 group-hover:translate-x-0.5" />
         </button>
       </div>
 
-      <p className="relative z-10 mt-6 text-center text-xs font-medium text-white/30">
+      <p className="relative z-10 mt-6 text-center text-xs font-medium" style={{ color: "var(--text-extra-faint)" }}>
         Пробел — старт / пауза · R — сброс · S — пропустить
       </p>
     </section>

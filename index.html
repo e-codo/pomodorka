@@ -6,14 +6,23 @@
     <title>Помодоро — таймер фокусировки</title>
     <link
       rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='18' r='12' fill='%23FF5C39'/%3E%3Ccircle cx='12' cy='15' r='4' fill='%23FF8A6B' opacity='.7'/%3E%3Cpath d='M16 7c-2 0-3.4-1-4.6-2 .4 2.2 1.6 3.4 3 3.8-1 .5-2.3.5-3.4.2 1.2 1.6 3 2.4 5 2 2 .4 3.8-.4 5-2-1.1.3-2.4.3-3.4-.2 1.4-.4 2.6-1.6 3-3.8C19.4 6 18 7 16 7z' fill='%2343D9A3'/%3E%3C/svg%3E"
+      href="image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='18' r='12' fill='%23FF5C39'/%3E%3Ccircle cx='12' cy='15' r='4' fill='%23FF8A6B' opacity='.7'/%3E%3Cpath d='M16 7c-2 0-3.4-1-4.6-2 .4 2.2 1.6 3.4 3 3.8-1 .5-2.3.5-3.4.2 1.2 1.6 3 2.4 5 2 2 .4 3.8-.4 5-2-1.1.3-2.4.3-3.4-.2 1.4-.4 2.6-1.6 3-3.8-1.2 1-2.6 2-4.6 2z' fill='%2343D9A3'/%3E%3C/svg%3E"
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;600;700;800;900&family=Unbounded:wght@500;600;700;800&display=swap"
       rel="stylesheet"
     />
+    <script>
+      // Инициализация темы до рендера, чтобы избежать мигания
+      (function () {
+        const saved = localStorage.getItem("pomodoro.theme");
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        const theme = saved || (prefersDark ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

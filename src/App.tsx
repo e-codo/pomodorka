@@ -17,7 +17,9 @@ import {
 import TimerCard from "./components/TimerCard";
 import StatsCard from "./components/StatsCard";
 import SettingsCard from "./components/SettingsCard";
+import ThemeToggle from "./components/ThemeToggle";
 import { IconTomato } from "./components/icons";
+import { useTheme } from "./hooks/useTheme";
 
 interface Toast {
   id: number;
@@ -34,6 +36,7 @@ export default function App() {
     modeDuration("focus", loadSettings()),
   );
   const [toast, setToast] = useState<Toast | null>(null);
+  const { theme, toggleTheme } = useTheme();
 
   const endAtRef = useRef<number | null>(null);
   const toastIdRef = useRef(0);
@@ -232,11 +235,11 @@ export default function App() {
 
   return (
     <div
-      className="relative min-h-screen overflow-x-hidden font-body text-[#EDE8DD]"
-      style={{ "--accent": accent } as CSSProperties}
+      className="relative min-h-screen overflow-x-hidden font-body"
+      style={{ "--accent": accent, color: "var(--text-primary)" } as CSSProperties}
     >
       {/* фоновая сцена */}
-      <div className="pointer-events-none fixed inset-0 -z-10 bg-[#0B1411]">
+      <div className="pointer-events-none fixed inset-0 -z-10" style={{ background: "var(--bg-primary)" }}>
         {(Object.keys(MODE_META) as Mode[]).map((m) => (
           <div
             key={m}
@@ -255,7 +258,10 @@ export default function App() {
           }}
         />
         <div className="bg-dots absolute inset-0" />
-        <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-black/45 to-transparent" />
+        <div
+          className="absolute inset-x-0 bottom-0 h-64"
+          style={{ background: `linear-gradient(to top, var(--bg-gradient-bottom), transparent)` }}
+        />
       </div>
 
       {/* шапка */}
@@ -263,17 +269,24 @@ export default function App() {
         <div className="flex items-center gap-3.5">
           <IconTomato className="h-10 w-10 drop-shadow-[0_6px_16px_rgba(255,92,57,0.45)]" />
           <div>
-            <p className="font-display text-xl font-bold leading-none tracking-tight text-[#F2EDE3]">
+            <p className="font-display text-xl font-bold leading-none tracking-tight" style={{ color: "var(--text-primary)" }}>
               Помодоро
             </p>
-            <p className="mt-1.5 text-[10px] font-bold uppercase tracking-[0.24em] text-white/35">
+            <p className="mt-1.5 text-[10px] font-bold uppercase tracking-[0.24em]" style={{ color: "var(--text-faint)" }}>
               таймер фокусировки
             </p>
           </div>
         </div>
-        <div className="text-right">
-          <p className="text-sm font-semibold text-white/70">{dateStr}</p>
-          <p className="mt-0.5 text-xs font-medium text-white/30">данные хранятся локально</p>
+        <div className="flex items-center gap-4">
+          <div className="text-right">
+            <p className="text-sm font-semibold" style={{ color: "var(--text-muted)" }}>
+              {dateStr}
+            </p>
+            <p className="mt-0.5 text-xs font-medium" style={{ color: "var(--text-faint)" }}>
+              данные хранятся локально
+            </p>
+          </div>
+          <ThemeToggle theme={theme} onToggle={toggleTheme} />
         </div>
       </header>
 
@@ -303,7 +316,7 @@ export default function App() {
         </div>
       </main>
 
-      <footer className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-2 px-5 pb-8 pt-2 text-xs font-medium text-white/25 sm:px-8">
+      <footer className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-2 px-5 pb-8 pt-2 text-xs font-medium" style={{ color: "var(--text-extra-faint)" }}>
         <p>Метод Pomodoro: чередуйте фокус и короткие перерывы, длинный — после каждого цикла</p>
         <p>
           {DEFAULT_SETTINGS.focusMin} / {DEFAULT_SETTINGS.shortMin} — классика ·{" "}
@@ -317,10 +330,11 @@ export default function App() {
       {toast && (
         <div
           key={toast.id}
-          className="anim-toast fixed bottom-6 left-1/2 z-50 flex items-center gap-3 rounded-2xl border px-5 py-3.5 text-sm font-semibold text-[#F2EDE3] shadow-2xl"
+          className="anim-toast fixed bottom-6 left-1/2 z-50 flex items-center gap-3 rounded-2xl border px-5 py-3.5 text-sm font-semibold shadow-2xl"
           style={{
             borderColor: `color-mix(in srgb, ${toast.color} 45%, transparent)`,
-            background: "color-mix(in srgb, #101B16 88%, transparent)",
+            background: theme === "dark" ? "color-mix(in srgb, #101B16 88%, transparent)" : "rgba(255,255,255,0.95)",
+            color: theme === "dark" ? "#F2EDE3" : "#1a1a1a",
             backdropFilter: "blur(12px)",
           }}
           role="status"
